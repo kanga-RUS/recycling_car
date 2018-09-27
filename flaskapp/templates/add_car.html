@@ -1,0 +1,50 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <p class="lead">Заполнителя поля и внесите информацию об утилизируемом автомобиле в базу данных</p>
+    </div>
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-success" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    <form method="post" enctype="multipart/form-data"">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        <label for="vin">{{ form.vin.label }}</label>
+          {{ form.vin(class="form-control") }}
+          {% if form.vin.errors %}
+          <ul class="list-group">
+            {% for error in form.vin.errors %}
+              <li class="list-group-item list-group-item-danger">{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="start_date">{{ form.start_date.label }}</label>
+          {{ form.start_date(class="form-control") }}
+        </div>
+        <div class="col">
+          <label for="stop_date">{{ form.stop_date.label }}</label>
+          {{ form.stop_date(class="form-control") }}
+          {% if form.stop_date.errors %}
+          <ul class="list-group">
+            {% for error in form.stop_date.errors %}
+              <li class="list-group-item list-group-item-danger">{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+      <p></p>
+      <div class="form-group">
+        <input type="file" name="file" accept=".jpeg" required>
+      </div>
+        <p></p>
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Добавить">
+      </div>
+    </form>
+{% endblock %}

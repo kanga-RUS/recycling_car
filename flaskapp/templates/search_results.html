@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="accordion" id="accordionExample">
+{% if cars.count() != 0 %}
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <p class="lead">Результаты поиска</p>
+        <p>Найдено {{ cars.count() }} автомобилей, бывших в строю в период с {{ dates.start_date }} по {{ dates.stop_date }}</p>
+    </div>
+  {% for car in cars %}
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">
+        <div class="text-primary">
+          VIN номер {{ car.vin }}
+        </div>
+      </h5>
+    </div>
+
+    <div class="collapse">
+      <div class="card-body">
+          <p>Дата выпуска автомобиля</p>
+          <p>{{ car.start_date }}</p>
+          <p>Дата утилизации автомобиля</p>
+          <p>{{ car.stop_date }}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+    {% else %}
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <p class="lead">Результаты поиска</p>
+        Автомобили бывшие в строю в период с {{ dates.start_date }} по {{ dates.stop_date }} не найдены
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
