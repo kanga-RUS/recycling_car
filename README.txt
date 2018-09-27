@@ -1,3 +1,5 @@
+python 3.5
+
 1) Установить необходимые пакеты
 $ sudo apt-get install apache2 libapache2-mod-wsgi python-dev
 2) Активировать модуль wsgi для apache2
