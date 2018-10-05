@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="accordion" id="accordionExample">
-{% if cars.count() != 0 %}
+    {% if cars.total != 0 %}
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <p class="lead">Результаты поиска</p>
-        <p>Найдено {{ cars.count() }} автомобилей, бывших в строю в период с {{ dates.start_date }} по {{ dates.stop_date }}</p>
+        <p>Найдено {{ cars.total }} автомобилей, бывших в строю в период с {{ dates.start_date }} по {{ dates.stop_date }}</p>
     </div>
-  {% for car in cars %}
+  {% for car in cars.items %}
   <div class="card">
     <div class="card-header">
       <h5 class="mb-0">
@@ -26,11 +26,19 @@
     </div>
   </div>
   {% endfor %}
+    <p></p>
+  {% for page_num in cars.iter_pages() %}
+    {% if page_num %}
+        <a class="btn btn-outline-info mb-4" href="{{ url_for('search_results', start_date=dates.start_date, stop_date=dates.stop_date, page=page_num) }}">{{ page_num }}</a>
     {% else %}
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <p class="lead">Результаты поиска</p>
-        Автомобили бывшие в строю в период с {{ dates.start_date }} по {{ dates.stop_date }} не найдены
-    </div>
+        ...
     {% endif %}
+  {% endfor %}
+{% else %}
+     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+         <p class="lead">Результаты поиска</p>
+         Автомобили бывшие в строю в период с {{ dates.start_date }} по {{ dates.stop_date }} не найдены
+     </div>
+     {% endif %}
 </div>
 {% endblock content %}
