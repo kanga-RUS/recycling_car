@@ -1,7 +1,6 @@
 #-*- coding: utf-8 -*-
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import or_
 from flask_migrate import Migrate
 import os
 from flask_wtf import Form
@@ -130,10 +129,10 @@ def get_info():
 
 @app.route('/search_results')
 def search_results():
+    page = request.args.get('page', 1, type=int)
     cars = db.session.query(Car).filter(
-        or_(Car.stop_date.between(request.args.get('start_date'), request.args.get('stop_date')),
-            Car.start_date.between(request.args.get('start_date'),request.args.get('stop_date')))
-    )
+        ((request.args.get('start_date') - Car.stop_date) * (request.args.get('stop_date') - Car.start_date)) <= 0
+    ).paginate(page=page, per_page=3)
     return render_template('search_results.html', cars=cars, dates=request.args)
 
 
